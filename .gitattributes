@@ -1,0 +1,2 @@
+# Normalize text repository-wide while leaving binary content untouched.
+* text=auto eol=lf
