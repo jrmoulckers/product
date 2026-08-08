@@ -8,7 +8,7 @@ Draft Product obligations for value, viability, pricing, and market decisions.
 - **Principle:** Base pricing, packaging, and entitlements on a documented value hypothesis, and reject revenue gains that materially weaken user value or trust.
 - **Rationale:** Sustainable monetization captures a fair share of created value without making infrastructure, opacity, or coercion the product.
 - **Verification:** The proposal identifies the beneficiary, value created, price or entitlement logic, trust risks, affected alternatives, and explicit human approval for contentious tradeoffs.
-- **Owner and ratification:** Product owns this business decision; the repository owner alone ratifies it, and this proposal remains Draft.
+- **Owner and ratification:** Product owns this business decision; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Studio expresses pricing and entitlements honestly, Engineering implements access mechanisms, and Product P1.2 defines applicable consent and compliance obligations.
 - **Legacy inputs:** `studio-legacy:business:1`, `studio-legacy:business:6`, `studio-legacy:ai-products:6`
 

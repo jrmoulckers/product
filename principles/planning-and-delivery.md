@@ -8,7 +8,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 - **Principle:** Decompose milestones into the smallest coherent slices that can deliver, test, or retire an outcome independently.
 - **Rationale:** Independent slices shorten feedback cycles, expose risk early, and keep delivery moving when optional capabilities are delayed.
 - **Verification:** Every planned slice names its user or business outcome, acceptance evidence, dependencies, safe stopping point, and value without later slices.
-- **Owner and ratification:** Product owns this planning outcome; the repository owner alone ratifies it, and this proposal remains Draft.
+- **Owner and ratification:** Product owns this planning outcome; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering and Studio implement viable slices in their realms, `.github` automates delivery workflow, and Product owns slice boundaries and outcome readiness.
 - **Legacy inputs:** `studio-legacy:project-planning:1`, `studio-legacy:project-planning:2`, `studio-legacy:ai-products:8`
 
@@ -45,9 +45,9 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 ## PROD-PLAN-005: Make go or no-go explicit
 
 - **Status:** Draft
-- **Principle:** Record an explicit go, hold, or no-go decision before exposing or releasing a material outcome.
+- **Principle:** Record an explicit go, hold, or no-go decision before exposing a material outcome, and apply the Release Decision principles when that exposure is a formal release.
 - **Rationale:** A visible decision prevents schedule pressure or automation from silently accepting unresolved product risk.
-- **Verification:** The decision names the accountable Product owner, required outcome evidence, unresolved severity, accepted exceptions, parity and documentation gaps, and rollback or follow-up obligations.
+- **Verification:** The decision names the accountable Product owner, affected outcome and exposure, applicable readiness policy, effective time, and resulting go, hold, or no-go state.
 - **Owner and ratification:** Product owns the go or no-go decision; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering provides technical readiness evidence, Studio provides user-facing and documentation readiness, and `.github` owns CI, branch, and release automation.
 - **Legacy inputs:** `studio-legacy:project-planning:7`, `studio-legacy:process:5`, `studio-legacy:process:6`

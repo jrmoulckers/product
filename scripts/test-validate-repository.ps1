@@ -40,6 +40,26 @@ Assert-InvalidFixture `
 Assert-InvalidFixture `
     -Name "duplicate-ID" `
     -Path (Join-Path $root "scripts/fixtures/duplicate-principles") `
-    -ExpectedMessage "Duplicate principle ID PROD-TEST-001"
+    -ExpectedMessage "Duplicate principle ID PROD-BUS-999"
+Assert-InvalidFixture `
+    -Name "wrong-ID-namespace" `
+    -Path (Join-Path $root "scripts/fixtures/invalid-namespace") `
+    -ExpectedMessage "must use the PROD-COMP- namespace"
+Assert-InvalidFixture `
+    -Name "ambiguous-ratification" `
+    -Path (Join-Path $root "scripts/fixtures/invalid-ratification") `
+    -ExpectedMessage "exact owner-only Draft ratification statement"
+Assert-InvalidFixture `
+    -Name "unresolvable-legacy-input" `
+    -Path (Join-Path $root "scripts/fixtures/invalid-legacy-input") `
+    -ExpectedMessage "resolvable backticked Studio legacy input IDs or none"
+Assert-InvalidFixture `
+    -Name "duplicate-metadata" `
+    -Path (Join-Path $root "scripts/fixtures/duplicate-metadata") `
+    -ExpectedMessage "must contain exactly one Status field"
+Assert-InvalidFixture `
+    -Name "unmapped-legacy-number" `
+    -Path (Join-Path $root "scripts/fixtures/invalid-legacy-number") `
+    -ExpectedMessage "does not resolve to a mapped"
 
 exit 0
