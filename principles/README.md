@@ -1,18 +1,23 @@
 # Product principles
 
-This directory is the future home of owner-ratified Product principles. No
-principles have been ratified yet, and this scaffold is not copied from Studio's
-legacy taxonomy.
+This directory contains the proposed Product principle tree. Every principle is
+**Draft** and unratified. The repository owner alone may ratify a principle.
 
-Expected domain areas:
+## Draft core tree
 
-- strategy;
-- planning and delivery;
-- business;
-- discovery and experiments;
-- metrics;
-- compliance; and
-- content operations.
+| Area | Draft IDs | Scope |
+| --- | --- | --- |
+| [Strategy](strategy.md) | `PROD-STRAT-001` through `PROD-STRAT-003` | Direction, evidence, and outcome milestones |
+| [Planning and delivery](planning-and-delivery.md) | `PROD-PLAN-001` through `PROD-PLAN-005` | Slices, commitments, dependencies, backlog, and go/no-go |
+| [Business](business.md) | `PROD-BUS-001` through `PROD-BUS-003` | Value, trust, viability, and market evidence |
+| [Discovery and experiments](discovery-and-experiments.md) | `PROD-DISC-001` through `PROD-DISC-004` | Learning, hypotheses, exposure, and experiment decisions |
+| [Metrics](metrics.md) | `PROD-MET-001` through `PROD-MET-003` | Definitions, collection bounds, and interpretation |
 
-Add domain structure only as principles are proposed and ratified. Agent-authored
-material must remain explicitly unratified until the repository owner accepts it.
+Compliance and content-operations principles are deferred. Draft metrics and
+experiment principles reference Product P1.2 where those obligations must be
+defined.
+
+Each principle records a stable ID, status, imperative, rationale, observable
+verification, ownership and ratification, authority handoff, and exact legacy
+input IDs or `none`. Legacy input references provide traceability without making
+the legacy Studio wording authoritative here.
