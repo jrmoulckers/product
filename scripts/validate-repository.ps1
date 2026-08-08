@@ -68,17 +68,17 @@ try {
         "strategy.md"                  = "PROD-STRAT-"
     }
     $legacyInputsBySource = @{
-        "accessibility"     = @(1)
-        "ai-products"      = @(4, 5, 6, 8)
+        "accessibility"     = @(1..7)
+        "ai-products"      = @(1..8)
         "business"         = @(1, 2, 3, 4, 5, 6)
         "compliance"       = @(1, 2, 3, 4, 5, 6, 7, 8)
         "data-analytics"   = @(1, 2, 3, 4, 5, 6, 7)
-        "documentation"    = @(1, 2, 3, 4, 6, 7)
-        "featuring"        = @(1, 2, 3, 4, 5, 6, 7)
-        "localization"     = @(1, 2, 3, 4, 5, 8, 9)
-        "process"          = @(4, 5, 6)
+        "documentation"    = @(1..7)
+        "featuring"        = @(1..7)
+        "localization"     = @(1..9)
+        "process"          = @(1..7)
         "project-planning" = @(1, 2, 3, 4, 5, 6, 7)
-        "security"         = @(2, 6, 8)
+        "security"         = @(1..8)
     }
     $legacySourceSlugs = @($legacyInputsBySource.Keys)
     $legacyInputPattern = '^`studio-legacy:(?:' +

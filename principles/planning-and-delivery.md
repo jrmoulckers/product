@@ -47,7 +47,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 - **Status:** Draft
 - **Principle:** Record an explicit go, hold, or no-go decision before exposing a material outcome, and apply the Release Decision principles when that exposure is a formal release.
 - **Rationale:** A visible decision prevents schedule pressure or automation from silently accepting unresolved product risk.
-- **Verification:** The decision names the accountable Product owner, affected outcome and exposure, applicable readiness policy, effective time, and resulting go, hold, or no-go state.
+- **Verification:** The decision names the accountable Product owner, affected outcome and exposure, applicable readiness policy, required evidence, unresolved severity, accepted exceptions, parity and documentation gaps, rollback or follow-up obligations, effective time, and resulting go, hold, or no-go state.
 - **Owner and ratification:** Product owns the go or no-go decision; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering provides technical readiness evidence, Studio provides user-facing and documentation readiness, and `.github` owns CI, branch, and release automation.
 - **Legacy inputs:** `studio-legacy:project-planning:7`, `studio-legacy:process:5`, `studio-legacy:process:6`

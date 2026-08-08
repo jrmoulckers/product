@@ -25,6 +25,6 @@ the legacy Studio wording authoritative here.
 
 `studio-legacy:<document>:<n>` resolves to the `n`th numbered principle in the
 legacy Studio `principles/<document>.md` file on `main`. The validator accepts
-only the exact legacy IDs mapped by this tree. Adding a migration input requires
-registering that source ID after resolving it. These references identify
-migration inputs, not current authority.
+only IDs within the confirmed no-gap range for each registered legacy source.
+Resolution confirms historical existence, not adoption or authority. These
+references identify migration inputs; the legacy wording remains non-authoritative.
