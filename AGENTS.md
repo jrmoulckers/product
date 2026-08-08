@@ -10,8 +10,15 @@ Agents working here must:
 - keep work within the Product authority described in `README.md`;
 - treat all agent-authored principles and decision records as proposals;
 - never represent a principle as ratified without explicit repository-owner action;
+- preserve stable principle IDs, the exact Draft ratification statement, and
+  resolvable legacy-input references enforced by the repository validator;
 - follow local Product principles as required constraints once they are authored
   and ratified; and
 - preserve the handoff boundary: Product defines obligations and outcomes,
   Engineering implements mechanisms and evidence, Studio expresses UI, and
   `.github` automates.
+
+Compliance proposals establish governance, evidence expectations, and triggers
+for qualified human review; they must not claim to provide legal advice.
+Content-operations proposals must not claim ownership of technical
+implementation documentation or GitHub-native templates and workflows.

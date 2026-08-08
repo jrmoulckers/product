@@ -5,6 +5,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Throw-ValidationError {
+    param(
+        [string]$Code,
+        [string]$Message
+    )
+
+    throw "[$Code] $Message"
+}
+
 $root = git rev-parse --show-toplevel
 if ($LASTEXITCODE -ne 0) {
     throw "Repository root could not be resolved."
@@ -57,10 +66,42 @@ try {
         "Handoff",
         "Legacy inputs"
     )
+    $idPrefixesByFile = @{
+        "business.md"                  = "PROD-BUS-"
+        "compliance.md"                = "PROD-COMP-"
+        "content-operations.md"        = "PROD-CONTENT-"
+        "discovery-and-experiments.md" = "PROD-DISC-"
+        "metrics.md"                   = "PROD-MET-"
+        "planning-and-delivery.md"     = "PROD-PLAN-"
+        "release-decisions.md"         = "PROD-REL-"
+        "strategy.md"                  = "PROD-STRAT-"
+    }
+    $legacyInputsBySource = @{
+        "accessibility"     = @(1..7)
+        "ai-products"      = @(1..8)
+        "business"         = @(1, 2, 3, 4, 5, 6)
+        "compliance"       = @(1, 2, 3, 4, 5, 6, 7, 8)
+        "data-analytics"   = @(1, 2, 3, 4, 5, 6, 7)
+        "documentation"    = @(1..7)
+        "featuring"        = @(1..7)
+        "localization"     = @(1..9)
+        "process"          = @(1..7)
+        "project-planning" = @(1, 2, 3, 4, 5, 6, 7)
+        "security"         = @(1..8)
+    }
+    $legacySourceSlugs = @($legacyInputsBySource.Keys)
+    $legacyInputPattern = '^`studio-legacy:(?:' +
+        (($legacySourceSlugs | ForEach-Object { [regex]::Escape($_) }) -join "|") +
+        '):[1-9][0-9]*`(?:, `studio-legacy:(?:' +
+        (($legacySourceSlugs | ForEach-Object { [regex]::Escape($_) }) -join "|") +
+        '):[1-9][0-9]*`)*$'
     $seenIds = @{}
     $principleCount = 0
 
     foreach ($file in $principleFiles) {
+        if (-not $idPrefixesByFile.ContainsKey($file.Name)) {
+            throw "$($file.Name) has no registered principle ID namespace."
+        }
         $content = Get-Content -LiteralPath $file.FullName -Raw
         $blocks = [regex]::Matches(
             $content,
@@ -77,8 +118,15 @@ try {
         foreach ($block in $blocks) {
             $id = $block.Groups["id"].Value
             $body = $block.Groups["body"].Value
+            if (-not $id.StartsWith($idPrefixesByFile[$file.Name])) {
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_ID_NAMESPACE" `
+                    -Message "$id in $($file.Name) must use the $($idPrefixesByFile[$file.Name]) namespace."
+            }
             if ($seenIds.ContainsKey($id)) {
-                throw "Duplicate principle ID $id in $($file.Name) and $($seenIds[$id])."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_DUPLICATE_ID" `
+                    -Message "Duplicate principle ID $id in $($file.Name) and $($seenIds[$id])."
             }
             $seenIds[$id] = $file.Name
             $principleCount++
@@ -86,14 +134,21 @@ try {
             $values = @{}
             foreach ($field in $requiredFields) {
                 $escapedField = [regex]::Escape($field)
-                $match = [regex]::Match(
+                $matches = [regex]::Matches(
                     $body,
                     "(?m)^- \*\*${escapedField}:\*\*[ \t]+(?<value>.+)$"
                 )
-                if (-not $match.Success) {
-                    throw "$id in $($file.Name) is missing required metadata: $field."
+                if ($matches.Count -eq 0) {
+                    Throw-ValidationError `
+                        -Code "PRINCIPLE_MISSING_METADATA" `
+                        -Message "$id in $($file.Name) is missing required metadata: $field."
                 }
-                $values[$field] = $match.Groups["value"].Value.Trim()
+                if ($matches.Count -ne 1) {
+                    Throw-ValidationError `
+                        -Code "PRINCIPLE_DUPLICATE_METADATA" `
+                        -Message "$id in $($file.Name) must contain exactly one $field field."
+                }
+                $values[$field] = $matches[0].Groups["value"].Value.Trim()
             }
 
             if ($values["Status"] -ne "Draft") {
@@ -101,15 +156,34 @@ try {
             }
             if (
                 $values["Owner and ratification"] -notmatch
-                    "(?i)repository owner alone ratifies"
+                    '^Product owns [^;]+; the repository owner alone ratifies this principle, and this proposal remains Draft\.$'
             ) {
-                throw "$id in $($file.Name) must state that the repository owner alone ratifies it."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_RATIFICATION" `
+                    -Message "$id in $($file.Name) must use the exact owner-only Draft ratification statement."
             }
             if (
                 $values["Legacy inputs"] -ne "none" -and
-                $values["Legacy inputs"] -notmatch '^`[^`]+`(?:, `[^`]+`)*$'
+                $values["Legacy inputs"] -notmatch $legacyInputPattern
             ) {
-                throw "$id in $($file.Name) must list backticked Legacy inputs IDs or none."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_LEGACY_FORMAT" `
+                    -Message "$id in $($file.Name) must list resolvable backticked Studio legacy input IDs or none."
+            }
+            if ($values["Legacy inputs"] -ne "none") {
+                $legacyInputs = [regex]::Matches(
+                    $values["Legacy inputs"],
+                    'studio-legacy:(?<source>[a-z-]+):(?<number>[1-9][0-9]*)'
+                )
+                foreach ($legacyInput in $legacyInputs) {
+                    $source = $legacyInput.Groups["source"].Value
+                    $number = [int]$legacyInput.Groups["number"].Value
+                    if ($legacyInputsBySource[$source] -notcontains $number) {
+                        Throw-ValidationError `
+                            -Code "PRINCIPLE_LEGACY_UNMAPPED" `
+                            -Message "$id in $($file.Name) references studio-legacy:${source}:${number}, which does not resolve to a mapped Studio legacy principle."
+                    }
+                }
             }
         }
     }
