@@ -5,6 +5,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Throw-ValidationError {
+    param(
+        [string]$Code,
+        [string]$Message
+    )
+
+    throw "[$Code] $Message"
+}
+
 $root = git rev-parse --show-toplevel
 if ($LASTEXITCODE -ne 0) {
     throw "Repository root could not be resolved."
@@ -110,10 +119,14 @@ try {
             $id = $block.Groups["id"].Value
             $body = $block.Groups["body"].Value
             if (-not $id.StartsWith($idPrefixesByFile[$file.Name])) {
-                throw "$id in $($file.Name) must use the $($idPrefixesByFile[$file.Name]) namespace."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_ID_NAMESPACE" `
+                    -Message "$id in $($file.Name) must use the $($idPrefixesByFile[$file.Name]) namespace."
             }
             if ($seenIds.ContainsKey($id)) {
-                throw "Duplicate principle ID $id in $($file.Name) and $($seenIds[$id])."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_DUPLICATE_ID" `
+                    -Message "Duplicate principle ID $id in $($file.Name) and $($seenIds[$id])."
             }
             $seenIds[$id] = $file.Name
             $principleCount++
@@ -126,10 +139,14 @@ try {
                     "(?m)^- \*\*${escapedField}:\*\*[ \t]+(?<value>.+)$"
                 )
                 if ($matches.Count -eq 0) {
-                    throw "$id in $($file.Name) is missing required metadata: $field."
+                    Throw-ValidationError `
+                        -Code "PRINCIPLE_MISSING_METADATA" `
+                        -Message "$id in $($file.Name) is missing required metadata: $field."
                 }
                 if ($matches.Count -ne 1) {
-                    throw "$id in $($file.Name) must contain exactly one $field field."
+                    Throw-ValidationError `
+                        -Code "PRINCIPLE_DUPLICATE_METADATA" `
+                        -Message "$id in $($file.Name) must contain exactly one $field field."
                 }
                 $values[$field] = $matches[0].Groups["value"].Value.Trim()
             }
@@ -141,13 +158,17 @@ try {
                 $values["Owner and ratification"] -notmatch
                     '^Product owns [^;]+; the repository owner alone ratifies this principle, and this proposal remains Draft\.$'
             ) {
-                throw "$id in $($file.Name) must use the exact owner-only Draft ratification statement."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_RATIFICATION" `
+                    -Message "$id in $($file.Name) must use the exact owner-only Draft ratification statement."
             }
             if (
                 $values["Legacy inputs"] -ne "none" -and
                 $values["Legacy inputs"] -notmatch $legacyInputPattern
             ) {
-                throw "$id in $($file.Name) must list resolvable backticked Studio legacy input IDs or none."
+                Throw-ValidationError `
+                    -Code "PRINCIPLE_LEGACY_FORMAT" `
+                    -Message "$id in $($file.Name) must list resolvable backticked Studio legacy input IDs or none."
             }
             if ($values["Legacy inputs"] -ne "none") {
                 $legacyInputs = [regex]::Matches(
@@ -158,7 +179,9 @@ try {
                     $source = $legacyInput.Groups["source"].Value
                     $number = [int]$legacyInput.Groups["number"].Value
                     if ($legacyInputsBySource[$source] -notcontains $number) {
-                        throw "$id in $($file.Name) references studio-legacy:${source}:${number}, which does not resolve to a mapped Studio legacy principle."
+                        Throw-ValidationError `
+                            -Code "PRINCIPLE_LEGACY_UNMAPPED" `
+                            -Message "$id in $($file.Name) references studio-legacy:${source}:${number}, which does not resolve to a mapped Studio legacy principle."
                     }
                 }
             }
