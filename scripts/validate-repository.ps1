@@ -100,10 +100,10 @@ try {
                 throw "$id in $($file.Name) must have Draft status."
             }
             if (
-                $values["Owner and ratification"] -notmatch "(?i)repository owner" -or
-                $values["Owner and ratification"] -notmatch "(?i)ratif"
+                $values["Owner and ratification"] -notmatch
+                    "(?i)repository owner alone ratifies"
             ) {
-                throw "$id in $($file.Name) must state repository-owner ratification."
+                throw "$id in $($file.Name) must state that the repository owner alone ratifies it."
             }
             if (
                 $values["Legacy inputs"] -ne "none" -and
