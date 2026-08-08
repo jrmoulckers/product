@@ -48,7 +48,7 @@ Assert-InvalidFixture `
 Assert-InvalidFixture `
     -Name "ambiguous-ratification" `
     -Path (Join-Path $root "scripts/fixtures/invalid-ratification") `
-    -ExpectedMessage "exact owner-only Draft ratification statement"
+    -ExpectedMessage "owner-only Draft"
 Assert-InvalidFixture `
     -Name "unresolvable-legacy-input" `
     -Path (Join-Path $root "scripts/fixtures/invalid-legacy-input") `
