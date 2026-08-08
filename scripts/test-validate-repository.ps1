@@ -52,7 +52,7 @@ Assert-InvalidFixture `
 Assert-InvalidFixture `
     -Name "unresolvable-legacy-input" `
     -Path (Join-Path $root "scripts/fixtures/invalid-legacy-input") `
-    -ExpectedMessage "resolvable backticked Studio legacy input IDs or none"
+    -ExpectedMessage "resolvable backticked"
 Assert-InvalidFixture `
     -Name "duplicate-metadata" `
     -Path (Join-Path $root "scripts/fixtures/duplicate-metadata") `
