@@ -4,7 +4,7 @@ Draft Product obligations for decision-useful definitions, collection bounds, an
 
 ## PROD-MET-001: Give each metric one versioned decision definition
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Maintain one owned, versioned definition for each metric that states the decision it informs, formula, population, window, exclusions, and required inputs.
 - **Rationale:** A metric cannot guide a decision when teams calculate different meanings or silently rewrite its history.
 - **Verification:** The metric record has one identifier, owner, decision use, complete definition, version history and effective dates, input lineage requirement, and migration note for breaking changes.
@@ -14,7 +14,7 @@ Draft Product obligations for decision-useful definitions, collection bounds, an
 
 ## PROD-MET-002: Bound measurement by purpose and consent
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Define the minimum data, population, purpose, consent dependency, access, retention, and deletion outcomes needed before approving measurement.
 - **Rationale:** Decision value does not justify unbounded collection or reuse, and Product must make the intended boundary explicit before mechanisms are built.
 - **Verification:** The metric record identifies purpose, necessary fields and population, prohibited reuse, consent dependency, retention and deletion outcomes, access need, and unresolved P1.2 obligations.
@@ -24,7 +24,7 @@ Draft Product obligations for decision-useful definitions, collection bounds, an
 
 ## PROD-MET-003: Interpret metrics honestly
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Report metric results with uncertainty, limitations, guardrail context, material segments, and alternative explanations before making a decision.
 - **Rationale:** A number without context can reward noise, hide harm, or turn correlation into an unsupported product claim.
 - **Verification:** The readout includes definition version, observation window, sample and missingness, uncertainty, guardrails, relevant segments, caveats, and the decision the evidence supports or cannot support.

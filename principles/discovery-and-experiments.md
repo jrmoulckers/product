@@ -4,7 +4,7 @@ Draft Product obligations for reducing uncertainty and governing exposure decisi
 
 ## PROD-DISC-001: Discover before committing past uncertainty
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Investigate the riskiest user, value, usability, viability, and feasibility assumptions before making a commitment that depends on them.
 - **Rationale:** Discovery is valuable when it changes a decision, not when it merely accumulates research activity.
 - **Verification:** The discovery brief states the decision, riskiest assumptions, evidence sought, participants or sources, stopping condition, and how each possible finding changes the plan.
@@ -14,7 +14,7 @@ Draft Product obligations for reducing uncertainty and governing exposure decisi
 
 ## PROD-DISC-002: Predeclare experiments as bounded decisions
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Before exposure, give each experiment one owner, one purpose, a falsifiable hypothesis, primary metric, guardrails, decision rule, kill conditions, and expiry.
 - **Rationale:** Predeclared bounds prevent metric shopping, unmanaged exposure, and experiments that persist without answering a decision.
 - **Verification:** The approved experiment record contains every required bound, the planned readout date, and the quality bar for any AI-backed outcome.
@@ -24,7 +24,7 @@ Draft Product obligations for reducing uncertainty and governing exposure decisi
 
 ## PROD-DISC-003: Stage exposure with safe, privacy-conscious cohorts
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Increase exposure in deliberate stages using deterministic, privacy-conscious cohorts and a proven ability to stop when guardrails or kill conditions are breached.
 - **Rationale:** Controlled exposure limits harm, makes comparisons reproducible, and preserves the ability to reverse a bad decision.
 - **Verification:** The rollout decision defines stages, cohort outcome requirements, guardrails, advancement authority, stop conditions, and evidence that exposure can be halted.
@@ -34,7 +34,7 @@ Draft Product obligations for reducing uncertainty and governing exposure decisi
 
 ## PROD-DISC-004: Conclude every experiment honestly
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Decide to ship, hold, revise, roll back, kill, or retire from the predeclared evidence, and close the experiment when the decision is made.
 - **Rationale:** A winning primary metric does not excuse a guardrail breach, and unresolved experiment infrastructure must not become permanent product debt.
 - **Verification:** The readout reports primary and guardrail results, uncertainty and limitations, deviations, the accountable decision, follow-up obligations, and retirement status.

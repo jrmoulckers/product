@@ -1,11 +1,14 @@
 # Product principles
 
-This directory contains the proposed Product principle tree. Every principle is
-**Draft** and unratified. The repository owner alone may ratify a principle.
+This directory contains the 40-entry Product principle tree. Every principle has
+**Ratified** catalog status. That status becomes effective only through the
+repository owner's merge of
+[decision record 0001](../docs/architecture/0001-ratify-product-principles.md);
+before that owner action, the status change is an unapproved proposal.
 
-## Draft tree
+## Ratified tree
 
-| Area | Draft IDs | Scope |
+| Area | Ratified IDs | Scope |
 | --- | --- | --- |
 | [Strategy](strategy.md) | `PROD-STRAT-001` through `PROD-STRAT-003` | Direction, evidence, and outcome milestones |
 | [Planning and delivery](planning-and-delivery.md) | `PROD-PLAN-001` through `PROD-PLAN-005` | Slices, commitments, dependencies, backlog, and go/no-go |
@@ -20,6 +23,9 @@ Each principle records a stable ID, status, imperative, rationale, observable
 verification, ownership and ratification, authority handoff, and exact legacy
 input IDs or `none`. Legacy input references provide traceability without making
 the legacy Studio wording authoritative here.
+
+The exact catalog validator rejects deletion, renumbering, reordering,
+unauthorized or mixed statuses, and any status-excluded semantic drift.
 
 ## Legacy input resolution
 

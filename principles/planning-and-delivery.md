@@ -4,7 +4,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 
 ## PROD-PLAN-001: Plan independently shippable outcome slices
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Decompose milestones into the smallest coherent slices that can deliver, test, or retire an outcome independently.
 - **Rationale:** Independent slices shorten feedback cycles, expose risk early, and keep delivery moving when optional capabilities are delayed.
 - **Verification:** Every planned slice names its user or business outcome, acceptance evidence, dependencies, safe stopping point, and value without later slices.
@@ -14,7 +14,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 
 ## PROD-PLAN-002: Make work decision-ready before commitment
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Give committed work an explicit priority, one accountable owner, bounded scope, testable acceptance, and stated non-goals.
 - **Rationale:** Clear commitments prevent silent scope growth and make ownership, tradeoffs, and completion observable.
 - **Verification:** The work record contains priority, accountable owner, acceptance checks, non-goals, and a visible decision when any of them changes.
@@ -24,7 +24,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 
 ## PROD-PLAN-003: Expose dependencies and parity obligations
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Make cross-authority dependencies, sequencing constraints, compatibility obligations, and intentional parity gaps visible before scheduling.
 - **Rationale:** Delivery risk should be chosen in planning rather than discovered during integration or release.
 - **Verification:** The plan identifies each dependency owner, required outcome, due point, blocked work, parity decision, and accepted gap with rationale.
@@ -34,7 +34,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 
 ## PROD-PLAN-004: Keep the backlog intentional
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Groom the backlog on a declared cadence so every retained item still has current value, priority, ownership, and evidence.
 - **Rationale:** An unmanaged queue hides obsolete assumptions and makes accidental age look like strategy.
 - **Verification:** Grooming records show duplicates closed, stale items retired or revalidated, priorities and owners refreshed, and deferral reasons recorded.
@@ -44,7 +44,7 @@ Draft Product obligations for turning strategy into reviewable, shippable outcom
 
 ## PROD-PLAN-005: Make go or no-go explicit
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Record an explicit go, hold, or no-go decision before exposing a material outcome, and apply the Release Decision principles when that exposure is a formal release.
 - **Rationale:** A visible decision prevents schedule pressure or automation from silently accepting unresolved product risk.
 - **Verification:** The decision names the accountable Product owner, affected outcome and exposure, applicable readiness policy, required evidence, unresolved severity, accepted exceptions, parity and documentation gaps, rollback or follow-up obligations, effective time, and resulting go, hold, or no-go state.
