@@ -34,14 +34,27 @@ with **Ratified** catalog status: 18 core principles from source PR
 and release-operations principles from source PR
 [#4](https://github.com/jrmoulckers/product/pull/4). Under
 [decision record 0001](docs/architecture/0001-ratify-product-principles.md),
-that status becomes effective only if the repository owner merges the pull
-request introducing the record. Until that owner action, the change remains a
-proposal and does not claim approval. Compliance principles establish
-governance and qualified-review triggers; they are not legal advice.
+that status became effective when the repository owner merged pull request
+[#5](https://github.com/jrmoulckers/product/pull/5) on 2026-08-09 as commit
+`3a752c11856515a74eb204675d5d5198cac1e48e`. The
+[Ratification record](docs/ratification/2026-08-09-product-principles.md)
+documents that act. The catalog is therefore a required Product constraint and a
+citable set of obligations. Compliance principles establish governance and
+qualified-review triggers; they are not legal advice.
 
 This repository introduces no software package or runtime behavior.
 
+## Consuming this repository
+
+Product authority is consumed **by reference, not by copy**. See
+[CONSUMING.md](CONSUMING.md) for the citation format, the machine-readable
+[`principles/manifest.json`](principles/manifest.json), and the boundary between
+what stays central and what stays in an application repository.
+[`templates/`](templates/) holds the reusable shapes — product definition,
+go/no-go record, metric definition, and experiment decision record — which are
+copied into the consuming repository and filled in there.
+
 ## Near-term roadmap
 
-1. Preserve the ratified catalog and apply it only after owner Ratification is effective.
+1. Reference the ratified catalog by stable ID from every consuming repository.
 2. Define reusable templates only when a recurring decision or process requires one.

@@ -17,5 +17,9 @@ decisions.
 ## Records
 
 - [0001: Ratify the Product principle catalog](0001-ratify-product-principles.md)
-  is the proposed owner-merge Ratification record for exactly 40 unchanged
-  Product principles.
+  is the owner-merge Ratification record for exactly 40 unchanged Product
+  principles. It permanently reads `Proposed` because its own text reserves
+  effectiveness to the owner merge rather than to any later edit of the record,
+  and the repository validator enforces that wording. The separate
+  [Ratification record](../ratification/2026-08-09-product-principles.md)
+  states that the merge occurred.

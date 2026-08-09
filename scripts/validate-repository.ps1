@@ -1,6 +1,10 @@
 param(
     [string]$PrinciplesPath = "principles",
     [string]$DecisionRecordPath = "docs/architecture/0001-ratify-product-principles.md",
+    [string]$ManifestPath = "principles/manifest.json",
+    [string]$RatificationRecordPath = "docs/ratification/2026-08-09-product-principles.md",
+    [string]$ConsumingPath = "CONSUMING.md",
+    [string]$TemplatesPath = "templates",
     [switch]$SkipTrackedTextValidation
 )
 
@@ -528,13 +532,136 @@ try {
             -Message "The Ratification decision record must preserve the exact catalog ranges, source PRs, evidence, non-goals, legal qualifier, handoffs, and Proposed metadata."
     }
 
+    # --- Consumption surface -------------------------------------------------
+    # The catalog is consumed by reference, so the machine-readable manifest,
+    # the citation guide, and the templates must stay bound to the catalog.
+
+    function Resolve-RepositoryPath {
+        param([string]$Path)
+
+        if ([IO.Path]::IsPathRooted($Path)) { return $Path }
+        return (Join-Path $root $Path)
+    }
+
+    & pwsh -NoProfile -File (Join-Path $root "scripts/build-manifest.ps1") `
+        -ManifestPath $ManifestPath -Check 1>$null 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        Throw-ValidationError `
+            -Code "MANIFEST_DRIFT" `
+            -Message "$ManifestPath does not match the principle catalog; run ./scripts/build-manifest.ps1."
+    }
+
+    $resolvedRatificationRecordPath = Resolve-RepositoryPath -Path $RatificationRecordPath
+    if (-not (Test-Path -LiteralPath $resolvedRatificationRecordPath -PathType Leaf)) {
+        Throw-ValidationError `
+            -Code "RATIFICATION_RECORD_MISSING" `
+            -Message "The effective-Ratification record is missing: $RatificationRecordPath."
+    }
+    $ratificationRecord = (
+        Get-Content -LiteralPath $resolvedRatificationRecordPath -Raw
+    ) -replace "`r`n", "`n"
+    $requiredRatificationPatterns = @(
+        [regex]::Escape("3a752c11856515a74eb204675d5d5198cac1e48e"),
+        [regex]::Escape($sourceCatalogCommit),
+        [regex]::Escape("https://github.com/jrmoulckers/product/pull/5"),
+        '(?m)^- Decision state: Effective\.',
+        '(?s)Content changes: None; only the 40 Status fields changed from Draft to\s+Ratified\.',
+        '(?s)Product defines obligations and outcomes, Engineering\s+implements mechanisms and evidence, Studio expresses the user interface, and\s+`\.github` automates\.',
+        [regex]::Escape("not legal advice")
+    )
+    foreach ($pattern in $requiredRatificationPatterns) {
+        if ($ratificationRecord -notmatch $pattern) {
+            Throw-ValidationError `
+                -Code "RATIFICATION_RECORD_MISMATCH" `
+                -Message "The effective-Ratification record must preserve the owner merge commit, source commit, source pull request, effective state, no-content-change claim, authority handoff, and legal qualifier."
+        }
+    }
+
+    $resolvedConsumingPath = Resolve-RepositoryPath -Path $ConsumingPath
+    if (-not (Test-Path -LiteralPath $resolvedConsumingPath -PathType Leaf)) {
+        Throw-ValidationError `
+            -Code "CONSUMING_GUIDE_MISSING" `
+            -Message "$ConsumingPath is missing; consuming repositories have no defined citation contract."
+    }
+    $consuming = (
+        Get-Content -LiteralPath $resolvedConsumingPath -Raw
+    ) -replace "`r`n", "`n"
+    foreach ($pattern in @(
+            '(?m)^# Consuming Product authority$',
+            [regex]::Escape("principles/manifest.json"),
+            [regex]::Escape("Never cite a branch"),
+            [regex]::Escape("by reference")
+        )) {
+        if ($consuming -notmatch $pattern) {
+            Throw-ValidationError `
+                -Code "CONSUMING_GUIDE_MISMATCH" `
+                -Message "$ConsumingPath must define reference-based consumption, the manifest, and commit-pinned citation."
+        }
+    }
+
+    $templateFiles = @(
+        "PRODUCT.md",
+        "experiment-decision-record.md",
+        "go-no-go-record.md",
+        "metric-definition.md"
+    )
+    $resolvedTemplatesPath = Resolve-RepositoryPath -Path $TemplatesPath
+    $templatesIndexPath = Join-Path $resolvedTemplatesPath "README.md"
+    if (-not (Test-Path -LiteralPath $templatesIndexPath -PathType Leaf)) {
+        Throw-ValidationError `
+            -Code "TEMPLATE_INDEX_MISSING" `
+            -Message "$TemplatesPath/README.md is missing."
+    }
+    $templatesIndex = (
+        Get-Content -LiteralPath $templatesIndexPath -Raw
+    ) -replace "`r`n", "`n"
+    $presentTemplates = @(
+        Get-ChildItem -LiteralPath $resolvedTemplatesPath -Filter "*.md" -File |
+            Where-Object Name -ne "README.md" |
+            ForEach-Object { $_.Name } |
+            Sort-Object
+    )
+    if (($presentTemplates -join "`n") -ne (($templateFiles | Sort-Object) -join "`n")) {
+        Throw-ValidationError `
+            -Code "TEMPLATE_SET" `
+            -Message "$TemplatesPath must contain exactly: $($templateFiles -join ', '). Found: $($presentTemplates -join ', ')."
+    }
+    foreach ($templateFile in $templateFiles) {
+        if ($templatesIndex -notmatch [regex]::Escape("($templateFile)")) {
+            Throw-ValidationError `
+                -Code "TEMPLATE_INDEX_MISMATCH" `
+                -Message "$TemplatesPath/README.md does not list $templateFile."
+        }
+
+        $templateContent = (
+            Get-Content -LiteralPath (Join-Path $resolvedTemplatesPath $templateFile) -Raw
+        ) -replace "`r`n", "`n"
+        $citedIds = @(
+            [regex]::Matches($templateContent, 'PROD-[A-Z]+-[0-9]{3}') |
+                ForEach-Object { $_.Value } |
+                Sort-Object -Unique
+        )
+        if ($citedIds.Count -eq 0) {
+            Throw-ValidationError `
+                -Code "TEMPLATE_CITATION_MISSING" `
+                -Message "$TemplatesPath/$templateFile cites no Product obligation; every template must bind its sections to the catalog."
+        }
+        foreach ($citedId in $citedIds) {
+            if (-not $seenIds.ContainsKey($citedId)) {
+                Throw-ValidationError `
+                    -Code "TEMPLATE_CITATION_UNRESOLVABLE" `
+                    -Message "$TemplatesPath/$templateFile cites $citedId, which is not in the Product catalog."
+            }
+        }
+    }
+
     $textSummary = if ($SkipTrackedTextValidation) {
         "tracked-text validation skipped"
     }
     else {
         "$($textFiles.Count) tracked text files use LF endings"
     }
-    Write-Host "Repository validation passed: $principleCount unique Ratified principles; immutable source $sourceCatalogCommit; semantic catalog SHA-256 $semanticCatalogHash; $textSummary."
+    Write-Host "Repository validation passed: $principleCount unique Ratified principles; immutable source $sourceCatalogCommit; semantic catalog SHA-256 $semanticCatalogHash; manifest, Ratification record, consumption guide, and $($templateFiles.Count) templates verified; $textSummary."
 }
 finally {
     Pop-Location
