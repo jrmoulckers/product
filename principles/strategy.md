@@ -4,7 +4,7 @@ Draft Product obligations for choosing direction and sequencing outcomes.
 
 ## PROD-STRAT-001: Put durable value and trust first
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Choose strategies that create durable user value and preserve trust before optimizing revenue, adoption, or novelty.
 - **Rationale:** Growth that weakens user agency, reliability, or confidence destroys the product asset it is meant to improve.
 - **Verification:** A strategy decision names the target user value, trust constraints, expected business value, tradeoffs, and reasons rejected options lost.
@@ -14,7 +14,7 @@ Draft Product obligations for choosing direction and sequencing outcomes.
 
 ## PROD-STRAT-002: Separate evidence, inference, and assumption
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** State the evidence, inference, assumptions, confidence, and next learning needed for every material strategic choice.
 - **Rationale:** Explicit uncertainty makes decisions reviewable and allows new evidence to change direction without rewriting history.
 - **Verification:** The decision record links dated evidence, labels assumptions, records confidence and alternatives, and assigns a trigger or method for reassessment.
@@ -24,7 +24,7 @@ Draft Product obligations for choosing direction and sequencing outcomes.
 
 ## PROD-STRAT-003: Build roadmaps from coherent outcome milestones
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Sequence milestones as coherent user and business outcomes that remain valuable without depending on one package, platform, vendor, model, or implementation contract.
 - **Rationale:** Outcome milestones keep strategy adaptable and prevent a technical dependency from becoming the product plan.
 - **Verification:** Each roadmap milestone states its outcome, affected users, success evidence, dependencies, non-goals, and the capability that remains if an optional dependency is unavailable.

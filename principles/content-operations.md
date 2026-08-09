@@ -4,7 +4,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-001: Keep contract documentation beside governed artifacts
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Require every governed product or technical contract artifact to carry or directly resolve to canonical, version-correct documentation with an owner, audience, compatibility promise, and change policy.
 - **Rationale:** Contract documentation that is detached from the artifact it governs becomes difficult to discover and easy to contradict.
 - **Verification:** Each governed artifact carries or directly links one canonical contract document with matching version, ownership, audience, compatibility, and change-policy metadata.
@@ -14,7 +14,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-002: Enumerate every public surface
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Maintain an owned inventory of public product, policy, support, integration, and release surfaces with the documentation required for each audience.
 - **Rationale:** Content coverage cannot be assessed when public promises and entry points are discovered only after users encounter them.
 - **Verification:** The inventory names every public surface, audience, canonical content, owner, lifecycle state, supported locales, and any approved documentation gap.
@@ -24,7 +24,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-003: Keep examples executable and current
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Require examples that make behavioral or technical claims to use supported interfaces, state prerequisites and expected results, and remain executable where execution is meaningful.
 - **Rationale:** An example that cannot be reproduced teaches a stale or false contract.
 - **Verification:** Each governed example names its supported context and expected result, and current execution evidence or an explicit non-executable rationale accompanies review.
@@ -34,7 +34,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-004: Update required content in the same change
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Change affected product, policy, contract, support, migration, localization, and release content with the behavior or decision that makes it stale.
 - **Rationale:** Deferred documentation creates a period in which the product and its promises disagree.
 - **Verification:** Change evidence identifies affected content and locales, includes their updates, or records an approved gap with owner, user impact, expiry, and release decision.
@@ -44,7 +44,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-005: Structure content for accessible use
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Define content with descriptive headings, meaningful link text, text alternatives, plain language, logical reading order, and non-visual equivalents for essential information.
 - **Rationale:** Content is incomplete when its structure or wording prevents people from perceiving, navigating, or understanding it.
 - **Verification:** Content review records structure, reading order, links, alternatives, language clarity, and qualified accessibility findings for every supported presentation.
@@ -54,7 +54,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-006: Use diagrams when relationships need them
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Require an explicit diagram decision for governed content whose acceptance depends on sequence, state transitions, cross-authority ownership, or system relationships.
 - **Rationale:** The right visual model can expose gaps and make a cross-authority contract reviewable without replacing precise text.
 - **Verification:** Content classified in any listed relationship category includes a maintained diagram, surrounding explanation, accessible equivalent, owner, and update trigger, or records why a diagram would not improve the decision.
@@ -64,7 +64,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-007: Preserve link integrity
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Keep internal and external references resolvable, purposeful, and anchored to the canonical version of the content they support.
 - **Rationale:** Broken, circular, or obsolete links sever evidence, navigation, and migration paths.
 - **Verification:** Automated and sampled review finds no broken governed links, and redirects or replacements preserve intent, ownership, and version context.
@@ -74,7 +74,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-008: Govern terminology and content changes
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Route material non-interface source content through one versioned glossary and a declared workflow for drafting, domain review, accessibility, localization, qualified review when triggered, approval, publication, and rollback.
 - **Rationale:** Shared terms and explicit review prevent contradictory promises while keeping sensitive wording under qualified human control.
 - **Verification:** Each material change links the terms used, required reviewers, locale coverage, approval state, effective version, publication result, and rollback path.
@@ -84,7 +84,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 
 ## PROD-CONTENT-009: Own the full content lifecycle
 
-- **Status:** Draft
+- **Status:** Ratified
 - **Principle:** Give every governed content item a canonical source, accountable owner, audience, status, version and effective date, review cadence, supported locales, linked product behavior, and retirement or archival rule.
 - **Rationale:** Content without lifecycle ownership accumulates stale promises and remains published after its behavior or audience has changed.
 - **Verification:** Lifecycle review identifies no ownerless, overdue, behavior-detached, unsupported, or indefinitely deprecated governed content without an accepted exception.

@@ -8,10 +8,14 @@ Agents working here must:
 
 - follow the canonical `.github` guidance plus this local overlay;
 - keep work within the Product authority described in `README.md`;
-- treat all agent-authored principles and decision records as proposals;
-- never represent a principle as ratified without explicit repository-owner action;
-- preserve stable principle IDs, the exact Draft ratification statement, and
-  resolvable legacy-input references enforced by the repository validator;
+- treat all agent-authored principles and decision records as proposals until
+  the repository owner makes Ratification effective by merging the owner-review
+  change;
+- never represent a proposed status change as approved before that explicit
+  repository-owner action;
+- preserve stable principle IDs, the exact `Ratified` status, the unchanged
+  owner-and-ratification wording from the source proposals, and resolvable
+  legacy-input references enforced by the repository validator;
 - follow local Product principles as required constraints once they are authored
   and ratified; and
 - preserve the handoff boundary: Product defines obligations and outcomes,

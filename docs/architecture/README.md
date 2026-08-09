@@ -13,3 +13,9 @@ decisions.
 - Agents may create only `Proposed` records.
 - Only the repository owner may change a record to `Ratified`.
 - Preserve accepted records; supersede them rather than rewriting history.
+
+## Records
+
+- [0001: Ratify the Product principle catalog](0001-ratify-product-principles.md)
+  is the proposed owner-merge Ratification record for exactly 40 unchanged
+  Product principles.
