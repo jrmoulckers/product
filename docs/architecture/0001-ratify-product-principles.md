@@ -36,8 +36,10 @@ semantically unchanged from source PRs #3 and #4.
   change.
 - Local Windows PowerShell and the GitHub-hosted `ubuntu-latest` PowerShell
   workflow run `./scripts/test-validate-repository.ps1` successfully.
-- The exact-catalog validator reports 40 unique `Ratified` principles and the
-  expected status-excluded semantic-content SHA-256.
+- The exact-catalog validator derives paths, IDs, ordering, and
+  status-excluded semantic hashes from immutable source PR #4 merge commit
+  `b0b2ef66094bbc5abf19cd4ae0ac85b05f12ddb5`, which contains source PR #3,
+  then reports 40 unique `Ratified` principles and the expected catalog hash.
 
 ## Consequences
 
