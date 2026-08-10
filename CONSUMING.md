@@ -35,6 +35,35 @@ https://github.com/jrmoulckers/product/blob/3a752c11856515a74eb204675d5d5198cac1
 
 Never cite a branch. `main` moves; a SHA does not.
 
+## Before you cite
+
+These three rules were written after seven repositories adopted this catalog.
+Each one records a mistake that a careful reader made anyway.
+
+**Name the principle carrying that exact substance, and confirm you have read its
+text.** "This topic is centrally owned" is not sufficient. Topical adjacency is
+not coverage: a principle about metrics does not necessarily govern survey
+design, and a principle about content does not necessarily govern disclosure
+policy. Read the obligation's body, not its title, and check that the subject of
+the obligation is actually present in your local content. An ID that resolves is
+not yet an ID that applies.
+
+**A citation attributes authority; it never substitutes for substance.** Adding
+`PROD-MET-001` above a metric definition does not move that definition here.
+Central carries obligations, not method. If deleting local content leaves a
+reader unable to do the thing the obligation requires, the content was never
+duplicated — it was the only copy. Reduce only what a named central passage
+actually replaces, and prefer citing above intact content to rewriting it.
+
+**A negative result from a tool is a hypothesis, not a finding.** A search that
+returns nothing may mean the content is absent, or that it wraps across a line,
+uses different casing, or sits behind a heading you did not search. Before
+concluding something is missing or unused, confirm the negative by a second
+method.
+
+Claiming an obligation is *vacuous* or *inapplicable* carries the same burden as
+citing it: read the text first.
+
 ## Machine-readable catalog
 
 [`principles/manifest.json`](principles/manifest.json) lists every principle with
