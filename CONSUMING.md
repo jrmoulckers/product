@@ -64,6 +64,20 @@ method.
 Claiming an obligation is *vacuous* or *inapplicable* carries the same burden as
 citing it: read the text first.
 
+## Every principle here is in force
+
+Each principle carries `**Status:** Ratified`. Each also ends its
+`**Owner and ratification:**` line with `...and this proposal remains Draft.`
+Those two statements have different subjects and do not conflict: `Status` is the
+principle's live catalog state, while the trailing clause describes *the source
+proposal*, whose wording is frozen verbatim to prove that ratification changed
+status and nothing else.
+
+**Where they appear to disagree, `Status` governs.** Do not read the frozen
+clause as evidence that an obligation is unratified, provisional, or unsafe to
+cite. See
+[`principles/README.md`](principles/README.md#reading-the-status-fields).
+
 ## Machine-readable catalog
 
 [`principles/manifest.json`](principles/manifest.json) lists every principle with
