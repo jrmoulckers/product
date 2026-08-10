@@ -1,0 +1,299 @@
+{
+  "$comment": "Generated from principles/*.md by scripts/build-manifest.ps1. Do not hand-edit; scripts/validate-repository.ps1 regenerates and compares this file.",
+  "authority": "product",
+  "repository": "jrmoulckers/product",
+  "owns": "Product obligations and outcomes",
+  "ratification": {
+    "state": "effective",
+    "date": "2026-08-09",
+    "owner": "jrmoulckers",
+    "pullRequest": "https://github.com/jrmoulckers/product/pull/5",
+    "mergeCommit": "3a752c11856515a74eb204675d5d5198cac1e48e",
+    "decisionRecord": "docs/architecture/0001-ratify-product-principles.md",
+    "ratificationRecord": "docs/ratification/2026-08-09-product-principles.md",
+    "sourceCatalogCommit": "b0b2ef66094bbc5abf19cd4ae0ac85b05f12ddb5"
+  },
+  "count": 40,
+  "principles": [
+    {
+      "id": "PROD-STRAT-001",
+      "title": "Put durable value and trust first",
+      "area": "Strategy",
+      "file": "principles/strategy.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-STRAT-002",
+      "title": "Separate evidence, inference, and assumption",
+      "area": "Strategy",
+      "file": "principles/strategy.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-STRAT-003",
+      "title": "Build roadmaps from coherent outcome milestones",
+      "area": "Strategy",
+      "file": "principles/strategy.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-PLAN-001",
+      "title": "Plan independently shippable outcome slices",
+      "area": "Planning and delivery",
+      "file": "principles/planning-and-delivery.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-PLAN-002",
+      "title": "Make work decision-ready before commitment",
+      "area": "Planning and delivery",
+      "file": "principles/planning-and-delivery.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-PLAN-003",
+      "title": "Expose dependencies and parity obligations",
+      "area": "Planning and delivery",
+      "file": "principles/planning-and-delivery.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-PLAN-004",
+      "title": "Keep the backlog intentional",
+      "area": "Planning and delivery",
+      "file": "principles/planning-and-delivery.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-PLAN-005",
+      "title": "Make go or no-go explicit",
+      "area": "Planning and delivery",
+      "file": "principles/planning-and-delivery.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-BUS-001",
+      "title": "Make monetization serve user value and trust",
+      "area": "Business",
+      "file": "principles/business.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-BUS-002",
+      "title": "Prove viability with bounded assumptions",
+      "area": "Business",
+      "file": "principles/business.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-BUS-003",
+      "title": "Ground market claims and constraints in evidence",
+      "area": "Business",
+      "file": "principles/business.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-DISC-001",
+      "title": "Discover before committing past uncertainty",
+      "area": "Discovery and experiments",
+      "file": "principles/discovery-and-experiments.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-DISC-002",
+      "title": "Predeclare experiments as bounded decisions",
+      "area": "Discovery and experiments",
+      "file": "principles/discovery-and-experiments.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-DISC-003",
+      "title": "Stage exposure with safe, privacy-conscious cohorts",
+      "area": "Discovery and experiments",
+      "file": "principles/discovery-and-experiments.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-DISC-004",
+      "title": "Conclude every experiment honestly",
+      "area": "Discovery and experiments",
+      "file": "principles/discovery-and-experiments.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-MET-001",
+      "title": "Give each metric one versioned decision definition",
+      "area": "Metrics",
+      "file": "principles/metrics.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-MET-002",
+      "title": "Bound measurement by purpose and consent",
+      "area": "Metrics",
+      "file": "principles/metrics.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-MET-003",
+      "title": "Interpret metrics honestly",
+      "area": "Metrics",
+      "file": "principles/metrics.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-001",
+      "title": "Trace every applicable obligation to evidence",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-002",
+      "title": "Bound processing by purpose and necessity",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-003",
+      "title": "Map privacy rights to product behavior",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-004",
+      "title": "Decide residency and transfer bounds before launch",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-005",
+      "title": "Bound retention and terminal disposition",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-006",
+      "title": "Permit only reviewed software distribution",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-007",
+      "title": "Keep audit readiness continuous",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-008",
+      "title": "Make consent specific and revocable",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-COMP-009",
+      "title": "Use data categories and synthetic examples",
+      "area": "Compliance",
+      "file": "principles/compliance.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-001",
+      "title": "Keep contract documentation beside governed artifacts",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-002",
+      "title": "Enumerate every public surface",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-003",
+      "title": "Keep examples executable and current",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-004",
+      "title": "Update required content in the same change",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-005",
+      "title": "Structure content for accessible use",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-006",
+      "title": "Use diagrams when relationships need them",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-007",
+      "title": "Preserve link integrity",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-008",
+      "title": "Govern terminology and content changes",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-CONTENT-009",
+      "title": "Own the full content lifecycle",
+      "area": "Content operations",
+      "file": "principles/content-operations.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-REL-001",
+      "title": "Decide against explicit release readiness",
+      "area": "Release decisions",
+      "file": "principles/release-decisions.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-REL-002",
+      "title": "Make risk acceptance explicit and expiring",
+      "area": "Release decisions",
+      "file": "principles/release-decisions.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-REL-003",
+      "title": "Identify the released outcome and disclose gaps",
+      "area": "Release decisions",
+      "file": "principles/release-decisions.md",
+      "status": "Ratified"
+    },
+    {
+      "id": "PROD-REL-004",
+      "title": "Release on a meaningful cadence",
+      "area": "Release decisions",
+      "file": "principles/release-decisions.md",
+      "status": "Ratified"
+    }
+  ]
+}

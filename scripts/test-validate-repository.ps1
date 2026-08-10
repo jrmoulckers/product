@@ -16,7 +16,8 @@ function Assert-InvalidFixture {
         [string]$Name,
         [string]$Path,
         [string]$ExpectedErrorId,
-        [string]$DecisionRecordPath
+        [string]$DecisionRecordPath,
+        [string[]]$ExtraArguments = @()
     )
 
     $arguments = @(
@@ -30,6 +31,7 @@ function Assert-InvalidFixture {
     if ($DecisionRecordPath) {
         $arguments += @("-DecisionRecordPath", $DecisionRecordPath)
     }
+    $arguments += $ExtraArguments
     $output = & pwsh @arguments 2>&1
     if ($LASTEXITCODE -eq 0) {
         throw "Expected the $Name fixture to fail validation."
@@ -96,6 +98,51 @@ function Assert-MutatedDecisionInvalid {
         -Path (Join-Path $root "principles") `
         -ExpectedErrorId $ExpectedErrorId `
         -DecisionRecordPath $fixtureDecision
+}
+
+function Assert-MutatedConsumptionInvalid {
+    param(
+        [string]$Name,
+        [string]$ExpectedErrorId,
+        [ValidateSet("Manifest", "RatificationRecord", "Consuming", "Templates")]
+        [string]$Surface,
+        [scriptblock]$Mutation
+    )
+
+    $fixtureRoot = Join-Path $testTempRoot $Name
+    New-Item -ItemType Directory -Path $fixtureRoot | Out-Null
+
+    switch ($Surface) {
+        "Manifest" {
+            $fixture = Join-Path $fixtureRoot "manifest.json"
+            Copy-Item -LiteralPath (Join-Path $root "principles/manifest.json") -Destination $fixture
+            $switchName = "-ManifestPath"
+        }
+        "RatificationRecord" {
+            $fixture = Join-Path $fixtureRoot "ratification.md"
+            Copy-Item `
+                -LiteralPath (Join-Path $root "docs/ratification/2026-08-09-product-principles.md") `
+                -Destination $fixture
+            $switchName = "-RatificationRecordPath"
+        }
+        "Consuming" {
+            $fixture = Join-Path $fixtureRoot "CONSUMING.md"
+            Copy-Item -LiteralPath (Join-Path $root "CONSUMING.md") -Destination $fixture
+            $switchName = "-ConsumingPath"
+        }
+        "Templates" {
+            $fixture = Join-Path $fixtureRoot "templates"
+            Copy-Item -LiteralPath (Join-Path $root "templates") -Destination $fixture -Recurse
+            $switchName = "-TemplatesPath"
+        }
+    }
+
+    & $Mutation $fixture
+    Assert-InvalidFixture `
+        -Name $Name `
+        -Path (Join-Path $root "principles") `
+        -ExpectedErrorId $ExpectedErrorId `
+        -ExtraArguments @($switchName, $fixture)
 }
 
 function Assert-HarnessRejectsWrongErrorId {
@@ -275,6 +322,107 @@ try {
                 "If and only if any maintainer merges"
             )
             Set-FixtureContent -Path $path -Content $content
+        }
+
+    Assert-MutatedConsumptionInvalid `
+        -Name "manifest-drift" `
+        -ExpectedErrorId "MANIFEST_DRIFT" `
+        -Surface "Manifest" `
+        -Mutation {
+            param($path)
+            $content = Get-Content -LiteralPath $path -Raw
+            $content = $content.Replace("PROD-STRAT-001", "PROD-STRAT-999")
+            Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "ratification-record-missing" `
+        -ExpectedErrorId "RATIFICATION_RECORD_MISSING" `
+        -Surface "RatificationRecord" `
+        -Mutation {
+            param($path)
+            Remove-Item -LiteralPath $path -Force
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "ratification-record-wrong-merge-commit" `
+        -ExpectedErrorId "RATIFICATION_RECORD_MISMATCH" `
+        -Surface "RatificationRecord" `
+        -Mutation {
+            param($path)
+            $content = Get-Content -LiteralPath $path -Raw
+            $content = $content.Replace(
+                "3a752c11856515a74eb204675d5d5198cac1e48e",
+                "0000000000000000000000000000000000000000"
+            )
+            Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "ratification-record-dropped-legal-qualifier" `
+        -ExpectedErrorId "RATIFICATION_RECORD_MISMATCH" `
+        -Surface "RatificationRecord" `
+        -Mutation {
+            param($path)
+            $content = Get-Content -LiteralPath $path -Raw
+            $content = $content.Replace("not legal advice", "legal advice")
+            Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "consuming-guide-missing" `
+        -ExpectedErrorId "CONSUMING_GUIDE_MISSING" `
+        -Surface "Consuming" `
+        -Mutation {
+            param($path)
+            Remove-Item -LiteralPath $path -Force
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "consuming-guide-allows-branch-citation" `
+        -ExpectedErrorId "CONSUMING_GUIDE_MISMATCH" `
+        -Surface "Consuming" `
+        -Mutation {
+            param($path)
+            $content = Get-Content -LiteralPath $path -Raw
+            $content = $content.Replace("Never cite a branch", "Cite a branch")
+            Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "template-removed" `
+        -ExpectedErrorId "TEMPLATE_SET" `
+        -Surface "Templates" `
+        -Mutation {
+            param($path)
+            Remove-Item -LiteralPath (Join-Path $path "metric-definition.md") -Force
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "template-unlisted" `
+        -ExpectedErrorId "TEMPLATE_INDEX_MISMATCH" `
+        -Surface "Templates" `
+        -Mutation {
+            param($path)
+            $indexPath = Join-Path $path "README.md"
+            $content = Get-Content -LiteralPath $indexPath -Raw
+            $content = $content.Replace("(go-no-go-record.md)", "(go-no-go.md)")
+            Set-FixtureContent -Path $indexPath -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "template-uncited" `
+        -ExpectedErrorId "TEMPLATE_CITATION_MISSING" `
+        -Surface "Templates" `
+        -Mutation {
+            param($path)
+            $templatePath = Join-Path $path "metric-definition.md"
+            $content = Get-Content -LiteralPath $templatePath -Raw
+            $content = [regex]::Replace($content, 'PROD-[A-Z]+-[0-9]{3}', "a Product obligation")
+            Set-FixtureContent -Path $templatePath -Content $content
+        }
+    Assert-MutatedConsumptionInvalid `
+        -Name "template-unresolvable-citation" `
+        -ExpectedErrorId "TEMPLATE_CITATION_UNRESOLVABLE" `
+        -Surface "Templates" `
+        -Mutation {
+            param($path)
+            $templatePath = Join-Path $path "go-no-go-record.md"
+            $content = Get-Content -LiteralPath $templatePath -Raw
+            $content = $content.Replace("PROD-REL-001", "PROD-REL-999")
+            Set-FixtureContent -Path $templatePath -Content $content
         }
 
     Assert-HarnessRejectsWrongErrorId
