@@ -1,0 +1,35 @@
+{
+  "$comment": "Bounded corrections applied to the immutable source catalog before semantic comparison. Authorized by docs/architecture/0002-correct-legacy-input-references.md. Each correction must match its source line exactly once. Any principle-file difference not enumerated here still fails PRINCIPLE_SEMANTIC_DRIFT.",
+  "schemaVersion": 1,
+  "sourceCommit": "b0b2ef66094bbc5abf19cd4ae0ac85b05f12ddb5",
+  "authority": "docs/architecture/0002-correct-legacy-input-references.md",
+  "corrections": [
+    {
+      "file": "content-operations.md",
+      "principle": "PROD-CONTENT-002",
+      "field": "Legacy inputs",
+      "from": "- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:security:8`",
+      "to": "- **Legacy inputs:** `studio-legacy:documentation:2`, `studio-legacy:security:8`",
+      "reason": "PROD-CONTENT-002 enumerates public surfaces. studio-legacy:documentation:3 is \"Examples are runnable and match the current code\"; the enumeration rule is studio-legacy:documentation:2, \"Public API surface is documented and enumerated\".",
+      "ledgerEvidence": "studio-legacy:documentation:2 -> PROD-CONTENT-002"
+    },
+    {
+      "file": "content-operations.md",
+      "principle": "PROD-CONTENT-003",
+      "field": "Legacy inputs",
+      "from": "- **Legacy inputs:** `studio-legacy:documentation:4`, `studio-legacy:documentation:6`",
+      "to": "- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:documentation:6`",
+      "reason": "PROD-CONTENT-003 keeps examples executable. studio-legacy:documentation:4 is \"Docs change in the same PR as the code they describe\"; the examples rule is studio-legacy:documentation:3, \"Examples are runnable and match the current code\".",
+      "ledgerEvidence": "studio-legacy:documentation:3 -> PROD-CONTENT-003"
+    },
+    {
+      "file": "content-operations.md",
+      "principle": "PROD-CONTENT-006",
+      "field": "Legacy inputs",
+      "from": "- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:documentation:6`",
+      "to": "- **Legacy inputs:** `studio-legacy:documentation:5`, `studio-legacy:documentation:6`",
+      "reason": "PROD-CONTENT-006 governs diagrams. studio-legacy:documentation:3 is \"Examples are runnable and match the current code\"; the diagrams rule is studio-legacy:documentation:5, \"Diagrams clarify architecture and flow\", which no principle claimed before this correction.",
+      "ledgerEvidence": "studio-legacy:documentation:5 -> PROD-CONTENT-006"
+    }
+  ]
+}

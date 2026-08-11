@@ -20,7 +20,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 - **Verification:** The inventory names every public surface, audience, canonical content, owner, lifecycle state, supported locales, and any approved documentation gap.
 - **Owner and ratification:** Product owns public-surface enumeration and required coverage; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering and Studio identify surfaces in their realms, while `.github` may automate inventory checks and repository health-file distribution.
-- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:security:8`
+- **Legacy inputs:** `studio-legacy:documentation:2`, `studio-legacy:security:8`
 
 ## PROD-CONTENT-003: Keep examples executable and current
 
@@ -30,7 +30,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 - **Verification:** Each governed example names its supported context and expected result, and current execution evidence or an explicit non-executable rationale accompanies review.
 - **Owner and ratification:** Product owns the example-currentness outcome; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering authors and executes technical examples, Studio owns experience examples, and `.github` may automate execution without redefining the claim.
-- **Legacy inputs:** `studio-legacy:documentation:4`, `studio-legacy:documentation:6`
+- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:documentation:6`
 
 ## PROD-CONTENT-004: Update required content in the same change
 
@@ -60,7 +60,7 @@ Draft Product obligations for keeping product, policy, and release content usabl
 - **Verification:** Content classified in any listed relationship category includes a maintained diagram, surrounding explanation, accessible equivalent, owner, and update trigger, or records why a diagram would not improve the decision.
 - **Owner and ratification:** Product owns when a governed explanation requires a diagram; the repository owner alone ratifies this principle, and this proposal remains Draft.
 - **Handoff:** Engineering and Studio validate realm accuracy and accessible rendering, while `.github` may automate diagram rendering and freshness checks.
-- **Legacy inputs:** `studio-legacy:documentation:3`, `studio-legacy:documentation:6`
+- **Legacy inputs:** `studio-legacy:documentation:5`, `studio-legacy:documentation:6`
 
 ## PROD-CONTENT-007: Preserve link integrity
 
