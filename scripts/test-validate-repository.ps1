@@ -79,6 +79,23 @@ function Assert-MutatedCatalogInvalid {
         -ExpectedErrorId $ExpectedErrorId
 }
 
+function Assert-MutatedCorrectionsInvalid {
+    param(
+        [string]$Name,
+        [string]$ExpectedErrorId,
+        [scriptblock]$Mutation
+    )
+
+    $correctionsSource = Join-Path $root "principles/legacy-input-corrections.json"
+    $fixtureCorrections = Join-Path $testTempRoot "$Name-corrections.json"
+    $mutated = & $Mutation (Get-Content -LiteralPath $correctionsSource -Raw)
+    Set-FixtureContent -Path $fixtureCorrections -Content $mutated
+    Assert-InvalidFixture `
+        -Name $Name `
+        -Path (Join-Path $root "principles") `
+        -ExpectedErrorId $ExpectedErrorId `
+        -ExtraArguments @("-LegacyInputCorrectionsPath", $fixtureCorrections)
+}
 function Assert-MutatedDecisionInvalid {
     param(
         [string]$Name,
@@ -292,6 +309,81 @@ try {
                 "studio-legacy:business:5"
             )
             Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-MutatedCatalogInvalid `
+        -Name "correction-not-applied" `
+        -ExpectedErrorId "PRINCIPLE_SEMANTIC_DRIFT" `
+        -Mutation {
+            param($principles)
+            $path = Join-Path $principles "content-operations.md"
+            $content = Get-Content -LiteralPath $path -Raw
+            $content = $content.Replace(
+                'studio-legacy:documentation:5`, `studio-legacy:documentation:6',
+                'studio-legacy:documentation:3`, `studio-legacy:documentation:6'
+            )
+            Set-FixtureContent -Path $path -Content $content
+        }
+    Assert-InvalidFixture `
+        -Name "correction-list-missing" `
+        -Path (Join-Path $root "principles") `
+        -ExpectedErrorId "LEGACY_INPUT_CORRECTIONS" `
+        -ExtraArguments @(
+            "-LegacyInputCorrectionsPath",
+            (Join-Path $testTempRoot "absent-corrections.json")
+        )
+    Assert-MutatedCorrectionsInvalid `
+        -Name "correction-target-mutated" `
+        -ExpectedErrorId "PRINCIPLE_SEMANTIC_DRIFT" `
+        -Mutation {
+            param($content)
+            $content.Replace(
+                'studio-legacy:documentation:5`, `studio-legacy:documentation:6',
+                'studio-legacy:documentation:4`, `studio-legacy:documentation:6'
+            )
+        }
+    Assert-MutatedCorrectionsInvalid `
+        -Name "correction-source-unmatched" `
+        -ExpectedErrorId "LEGACY_INPUT_CORRECTIONS" `
+        -Mutation {
+            param($content)
+            $content.Replace(
+                'studio-legacy:documentation:4`, `studio-legacy:documentation:6',
+                'studio-legacy:documentation:9`, `studio-legacy:documentation:6'
+            )
+        }
+    Assert-MutatedCorrectionsInvalid `
+        -Name "correction-outside-legacy-inputs" `
+        -ExpectedErrorId "LEGACY_INPUT_CORRECTIONS" `
+        -Mutation {
+            param($content)
+            $content.Replace('"field": "Legacy inputs"', '"field": "Principle"')
+        }
+    Assert-MutatedCorrectionsInvalid `
+        -Name "correction-source-commit-repinned" `
+        -ExpectedErrorId "LEGACY_INPUT_CORRECTIONS" `
+        -Mutation {
+            param($content)
+            $content.Replace(
+                "b0b2ef66094bbc5abf19cd4ae0ac85b05f12ddb5",
+                "0000000000000000000000000000000000000000"
+            )
+        }
+    Assert-MutatedCorrectionsInvalid `
+        -Name "correction-unauthorized-addition" `
+        -ExpectedErrorId "LEGACY_INPUT_CORRECTIONS" `
+        -Mutation {
+            param($content)
+            $document = $content | ConvertFrom-Json
+            $document.corrections = @($document.corrections) + @([pscustomobject]@{
+                file           = "strategy.md"
+                principle      = "PROD-STRAT-001"
+                field          = "Legacy inputs"
+                from           = '- **Legacy inputs:** `studio-legacy:business:9`'
+                to             = '- **Legacy inputs:** `studio-legacy:business:8`'
+                reason         = "Unauthorized correction used as a negative fixture."
+                ledgerEvidence = "none"
+            })
+            $document | ConvertTo-Json -Depth 8
         }
 
     Assert-InvalidFixture `

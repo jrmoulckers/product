@@ -62,34 +62,44 @@ unauthorized or mixed statuses, and any status-excluded semantic drift.
 
 ## Known legacy-input discrepancies
 
-Four `Legacy inputs` references in [content-operations.md](content-operations.md)
-name the wrong legacy principle. Verified against the legacy Studio
-`principles/documentation.md` headings at migration baseline
+Three `Legacy inputs` references in [content-operations.md](content-operations.md)
+named the wrong legacy principle. They are corrected under
+[decision record 0002](../docs/architecture/0002-correct-legacy-input-references.md),
+which enumerates them in
+[legacy-input-corrections.json](legacy-input-corrections.json). Verified against
+the legacy Studio `principles/documentation.md` headings at migration baseline
 `efe6aa3b5ad020331a91f533844b0b9f70d70b76`:
 
-| Principle | Cites | That legacy rule is | Subject match |
+| Principle | Proposed as | That legacy rule is | Corrected to |
 | --- | --- | --- | --- |
 | `PROD-CONTENT-002` Enumerate every public surface | `documentation:3` | Examples are runnable and match the current code | `documentation:2` Public API surface is documented and enumerated |
-| `PROD-CONTENT-003` Keep examples executable and current | `documentation:4`, `documentation:6` | Docs change in the same PR; Cross-references resolve | `documentation:3` Examples are runnable and match the current code |
-| `PROD-CONTENT-005` Structure content for accessible use | `documentation:6` | Cross-references are relative and resolve | `documentation:7` Docs are reviewed for accuracy, clarity, and accessibility |
-| `PROD-CONTENT-006` Use diagrams when relationships need them | `documentation:3`, `documentation:6` | Examples are runnable; Cross-references resolve | `documentation:5` Diagrams clarify architecture and flow |
+| `PROD-CONTENT-003` Keep examples executable and current | `documentation:4` | Docs change in the same PR as the code they describe | `documentation:3` Examples are runnable and match the current code |
+| `PROD-CONTENT-006` Use diagrams when relationships need them | `documentation:3` | Examples are runnable and match the current code | `documentation:5` Diagrams clarify architecture and flow |
 
-`studio-legacy:documentation:5` is claimed by no principle in this catalog, while
-the diagrams principle cites the examples rule instead. The
-[Studio migration ledger](https://github.com/jrmoulckers/studio/blob/main/principles/migration-ledger.json)
-maps all three of `documentation:2`, `:3`, and `:5` correctly; the error is here,
-not there.
+Each correction matches the successor recorded in the
+[Studio migration ledger](https://github.com/jrmoulckers/studio/blob/main/principles/migration-ledger.json),
+whose `citationException` entries on `documentation:2`, `:3`, and `:5` had already
+recorded the mismatch from the Studio side.
 
-**This does not affect any obligation.** Legacy inputs provide migration
-traceability only, and resolution confirms historical existence, not adoption or
-authority. Every principle statement, verification, and handoff is unaffected,
-and citing these IDs remains correct.
+**One candidate was deliberately not corrected.** `PROD-CONTENT-005` cites
+`documentation:6` where `documentation:7` is a closer subject match, but the
+ledger assigns `documentation:7` to `PROD-CONTENT-008` and records no legacy
+input for `PROD-CONTENT-005`. Legacy inputs may be broader than the ledger's
+primary successor, so that reference is unsupported rather than demonstrably
+wrong, and changing it would rest on subject judgement instead of evidence. The
+retained secondary `documentation:6` references on `PROD-CONTENT-003` and
+`PROD-CONTENT-006` are left alone for the same reason.
 
-Correcting them requires the repository owner. Principle files are frozen
-byte-for-byte against the immutable source proposal, and the validator rejects
-any change outside `Status` with `PRINCIPLE_SEMANTIC_DRIFT` — including a
-correction. Do not "fix" these references in a consuming repository or here.
+**No obligation was affected.** Legacy inputs provide migration traceability
+only, and resolution confirms historical existence, not adoption or authority.
+Every principle statement, verification, and handoff is unchanged, and every
+citation of these IDs in a consuming repository remains correct.
 
+Principle files remain frozen against the immutable source proposal. The
+validator now derives expected hashes from that source with the enumerated
+corrections applied, so any other change outside `Status` still fails
+`PRINCIPLE_SEMANTIC_DRIFT`. Do not edit a legacy input here or in a consuming
+repository; propose a correction against decision record 0002 instead.
 ## Legacy input resolution
 
 `studio-legacy:<document>:<n>` resolves to the `n`th numbered principle in the

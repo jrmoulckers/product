@@ -23,3 +23,10 @@ decisions.
   and the repository validator enforces that wording. The separate
   [Ratification record](../ratification/2026-08-09-product-principles.md)
   states that the merge occurred.
+- [0002: Correct three legacy-input references](0002-correct-legacy-input-references.md)
+  authorizes the only permitted departure from the immutable source catalog:
+  three `Legacy inputs` identifiers in `principles/content-operations.md`,
+  enumerated in
+  [legacy-input-corrections.json](../../principles/legacy-input-corrections.json).
+  It changes no obligation, and it reads `Proposed` for the same reason 0001
+  does.

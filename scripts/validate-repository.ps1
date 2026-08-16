@@ -2,6 +2,7 @@ param(
     [string]$PrinciplesPath = "principles",
     [string]$DecisionRecordPath = "docs/architecture/0001-ratify-product-principles.md",
     [string]$ManifestPath = "principles/manifest.json",
+    [string]$LegacyInputCorrectionsPath = "principles/legacy-input-corrections.json",
     [string]$RatificationRecordPath = "docs/ratification/2026-08-09-product-principles.md",
     [string]$ConsumingPath = "CONSUMING.md",
     [string]$TemplatesPath = "templates",
@@ -181,6 +182,101 @@ try {
             Sort-Object
     )
 
+    # Decision record 0002 authorizes a bounded set of legacy-input corrections
+    # applied to the immutable source before semantic comparison. Anything not
+    # enumerated here still fails PRINCIPLE_SEMANTIC_DRIFT.
+    $correctionsFileName = [IO.Path]::GetFileName($LegacyInputCorrectionsPath)
+    $correctionsPath = if ([IO.Path]::IsPathRooted($LegacyInputCorrectionsPath)) {
+        $LegacyInputCorrectionsPath
+    }
+    else {
+        Join-Path $root $LegacyInputCorrectionsPath
+    }
+    if (-not (Test-Path -LiteralPath $correctionsPath -PathType Leaf)) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "The authorized correction list $correctionsFileName is missing from the principles catalog."
+    }
+    try {
+        $correctionsDocument = Get-Content -LiteralPath $correctionsPath -Raw |
+            ConvertFrom-Json
+    }
+    catch {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "$correctionsFileName is not valid JSON: $($_.Exception.Message)"
+    }
+    if ($correctionsDocument.schemaVersion -ne 1) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "$correctionsFileName must declare schemaVersion 1."
+    }
+    if ($correctionsDocument.sourceCommit -ne $sourceCatalogCommit) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "$correctionsFileName must pin source commit $sourceCatalogCommit."
+    }
+    $correctionsAuthorityPath = Join-Path $root ([string]$correctionsDocument.authority)
+    if (
+        -not $correctionsDocument.authority -or
+        -not (Test-Path -LiteralPath $correctionsAuthorityPath -PathType Leaf)
+    ) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "$correctionsFileName must name an existing decision record as its authority."
+    }
+    if ($correctionsDocument.corrections -isnot [array]) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "$correctionsFileName must declare corrections as an array."
+    }
+    $corrections = @($correctionsDocument.corrections)
+    $correctionKeys = @{}
+    foreach ($correction in $corrections) {
+        foreach ($requiredKey in @("file", "principle", "field", "from", "to", "reason", "ledgerEvidence")) {
+            if ([string]::IsNullOrWhiteSpace([string]$correction.$requiredKey)) {
+                Throw-ValidationError `
+                    -Code "LEGACY_INPUT_CORRECTIONS" `
+                    -Message "Every correction in $correctionsFileName requires a non-empty $requiredKey."
+            }
+        }
+        if ($correction.field -ne "Legacy inputs") {
+            Throw-ValidationError `
+                -Code "LEGACY_INPUT_CORRECTIONS" `
+                -Message "$correctionsFileName may only correct the Legacy inputs field; found '$($correction.field)'."
+        }
+        if (-not $idPrefixesByFile.ContainsKey([string]$correction.file)) {
+            Throw-ValidationError `
+                -Code "LEGACY_INPUT_CORRECTIONS" `
+                -Message "$correctionsFileName targets an unregistered catalog path: $($correction.file)."
+        }
+        if ($correction.principle -notmatch '^PROD-[A-Z]+-[0-9]{3}$') {
+            Throw-ValidationError `
+                -Code "LEGACY_INPUT_CORRECTIONS" `
+                -Message "$correctionsFileName targets a malformed principle identifier: $($correction.principle)."
+        }
+        $correctionKey = "$($correction.file)|$($correction.principle)"
+        if ($correctionKeys.ContainsKey($correctionKey)) {
+            Throw-ValidationError `
+                -Code "LEGACY_INPUT_CORRECTIONS" `
+                -Message "$correctionsFileName corrects $($correction.principle) more than once."
+        }
+        $correctionKeys[$correctionKey] = $true
+        foreach ($sideName in @("from", "to")) {
+            if ([string]$correction.$sideName -notmatch '^- \*\*Legacy inputs:\*\* ') {
+                Throw-ValidationError `
+                    -Code "LEGACY_INPUT_CORRECTIONS" `
+                    -Message "The $sideName value for $($correction.principle) in $correctionsFileName is not a Legacy inputs line."
+            }
+        }
+        if ([string]$correction.from -ceq [string]$correction.to) {
+            Throw-ValidationError `
+                -Code "LEGACY_INPUT_CORRECTIONS" `
+                -Message "The correction for $($correction.principle) in $correctionsFileName changes nothing."
+        }
+        $correction | Add-Member -NotePropertyName "applied" -NotePropertyValue $false -Force
+    }
+
     $expectedCatalogByFile = [ordered]@{}
     $expectedFileSemanticHashes = @{}
     $sourceCatalogLines = @()
@@ -196,6 +292,35 @@ try {
         $sourceContent = Get-GitTextBlob `
             -Commit $sourceCatalogCommit `
             -Path $sourcePath
+        foreach ($correction in ($corrections | Where-Object { $_.file -eq $fileName })) {
+            $blockPattern = "(?ms)^## " +
+                [regex]::Escape([string]$correction.principle) +
+                ":.*?(?=^## |\z)"
+            $blockMatches = [regex]::Matches($sourceContent, $blockPattern)
+            if ($blockMatches.Count -ne 1) {
+                Throw-ValidationError `
+                    -Code "LEGACY_INPUT_CORRECTIONS" `
+                    -Message "$($correction.principle) does not appear exactly once in the immutable source path $sourcePath."
+            }
+            $sourceBlockText = $blockMatches[0].Value
+            $fromOccurrences = @(
+                [regex]::Matches($sourceBlockText, [regex]::Escape([string]$correction.from))
+            ).Count
+            if ($fromOccurrences -ne 1) {
+                Throw-ValidationError `
+                    -Code "LEGACY_INPUT_CORRECTIONS" `
+                    -Message "The corrected line for $($correction.principle) matches the immutable source $fromOccurrences times; exactly one match is required."
+            }
+            $correctedBlockText = $sourceBlockText.Replace(
+                [string]$correction.from,
+                [string]$correction.to
+            )
+            $sourceContent = $sourceContent.Remove(
+                $blockMatches[0].Index,
+                $blockMatches[0].Length
+            ).Insert($blockMatches[0].Index, $correctedBlockText)
+            $correction.applied = $true
+        }
         $sourceBlocks = [regex]::Matches(
             $sourceContent,
             "(?ms)^## (?<id>PROD-[A-Z]+-[0-9]{3}):[^\r\n]*\r?\n(?<body>.*?)(?=^## |\z)"
@@ -250,6 +375,16 @@ try {
         Throw-ValidationError `
             -Code "RATIFICATION_SOURCE_CATALOG" `
             -Message "Immutable source commit must contain exactly 40 Product principles; found $sourcePrincipleCount."
+    }
+    $unappliedCorrections = @(
+        $corrections |
+            Where-Object { -not $_.applied } |
+            ForEach-Object { [string]$_.principle }
+    )
+    if ($unappliedCorrections) {
+        Throw-ValidationError `
+            -Code "LEGACY_INPUT_CORRECTIONS" `
+            -Message "Corrections listed in $correctionsFileName were never applied: $($unappliedCorrections -join ', ')."
     }
     $expectedCatalogSemanticHash = Get-NormalizedSha256 `
         -Text ($sourceCatalogLines -join "`n")

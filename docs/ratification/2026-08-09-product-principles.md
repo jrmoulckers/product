@@ -19,6 +19,15 @@
 - Ownership changes: None; owner and Ratification wording, authority handoffs,
   and Legacy inputs remain unchanged from the source proposals.
 
+## Later corrections
+
+The statements above describe the 2026-08-09 Ratification act only. Three
+`Legacy inputs` references were corrected afterwards under
+[decision record 0002](../architecture/0002-correct-legacy-input-references.md),
+which enumerates them and remains the only authorized departure from the
+immutable source. No obligation, statement, verification, ownership wording, or
+identifier changed.
+
 ## Why this record is separate from decision record 0001
 
 Decision record 0001 is the immutable record of the *proposal*. It permanently
